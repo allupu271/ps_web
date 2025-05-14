@@ -20,7 +20,20 @@
             <button type="submit">Trimite</button>
         </form>
 
-        <p><strong>Mesaj ultim trimis:</strong> {{ mesaj }}</p>
+        <table id="message-table">
+            <thead>
+                <tr>
+                    <th>Mesaj</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for msg in messages %}
+                <tr>
+                    <td>{{ msg.Mesaj }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <script>

@@ -90,7 +90,7 @@ iot_hub_manager = IoTHubRegistryManager(CONNECTION_STRING)
 
 @app.route('/')
 def index():
-    return render_template('index.html', temperatura=received_temperature, inundatie=received_water)
+    return render_template('a.html', temperatura=received_temperature, inundatie=received_water)
 
 
 @app.route("/send_led_state", methods=["POST"])
@@ -105,6 +105,36 @@ def send_command():
         print(f"❌ Failed to send command: {e}")
 
     return jsonify({"status": "success", "message": "command"}), 200
+
+@app.route("/send_custom_command", methods=["POST"])
+def send_custom_command():
+    try:
+        data = request.get_json()
+        command = data["message"]
+        message = json.dumps({"message": command})
+        iot_hub_manager.send_c2d_message(DEVICE_ID, message)
+
+        return jsonify({
+            "status": "success",
+            "Mesaj": command,
+            "Data": time.strftime("%Y-%m-%d %H:%M:%S")
+        })
+    
+    except Exception as e:
+        print(f"❌ Failed to send message: {e}")
+
+
+@app.route("/get_temperature", methods=["GET"])
+def get_temperature():
+    try:
+        if received_temperature is not None:
+            return jsonify({"temperature": received_temperature})
+        else:
+            return jsonify({"error": "No temperature data available"}), 404
+    except Exception as e:
+        print(f"❌ Failed to get temperature: {e}")
+        return jsonify({"error": "Failed to get temperature"}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
