@@ -90,7 +90,7 @@ iot_hub_manager = IoTHubRegistryManager(CONNECTION_STRING)
 
 @app.route('/')
 def index():
-    return render_template('a.html', temperatura=received_temperature, inundatie=received_water)
+    return render_template('index.html', temperatura=received_temperature, inundatie=received_water)
 
 
 @app.route("/send_led_state", methods=["POST"])
