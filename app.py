@@ -19,10 +19,10 @@ CONSUMER_GROUP = "$Default"
 
 
 def send_email(subiect,mesaj):
-    SMTP_SERVER = 'smtp.mail.yahoo.com'
+    SMTP_SERVER = 'smtp.gmail.com'
     SMTP_PORT = 587
-    SMTP_USERNAME = 'cmorar100@yahoo.ro'
-    SMTP_PASSWORD = 'bqsxrsfiecsrjpik'
+    SMTP_USERNAME = 'lupualexandra308@gmail.com'
+    SMTP_PASSWORD = 'vebrcdsetwgdptrh'
     RECIPIENT_EMAIL = 'lupualexandra308@gmail.com'
 
     message = MIMEMultipart()
