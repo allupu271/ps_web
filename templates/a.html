@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Monitorizare Temperatură</h1>
+        <p>Temperatura curentă: <strong>{{ temperatura }} °C</strong></p>
+
+        <button  onclick="sendCommand('z')">LED: ON</button>
+        <button  onclick="sendCommand('off')">LED: OFF</button>
+
+        <h2>Trimite un mesaj</h2>
+        <form onsubmit="trimiteMesaj(event)">
+            <input type="text" name="mesaj" id="mesaj" placeholder="Scrie mesajul aici" required>
+            <button type="submit">Trimite</button>
+        </form>
+
+        <p><strong>Mesaj ultim trimis:</strong> {{ mesaj }}</p>
+    </div>
+
+    <script>
+         function sendCommand(command) {
+            fetch('/send_led_state', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ command: command })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerText = `Starea Ledului: ${command.toUpperCase()}`;
+            });
+        }
+
+        function trimiteMesaj(e) {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append("mesaj", document.getElementById("mesaj").value);
+
+            fetch('/trimite_mesaj', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert("Mesaj transmis: " + data.mesaj);
+                location.reload();
+            });
+        }
+    </script>
+</html>
