@@ -1,137 +1,72 @@
-<!-- <!DOCTYPE html>
-<html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <title>Sistem Monitorizare</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Monitorizare Temperatură</h1>
-        <p>Temperatura curentă: <strong>{{ temperatura }} °C</strong></p>
-
-        <button id="led-btn" onclick="toggleLED()">LED: {{ 'ON' if led else 'OFF' }}</button>
-
-        <h2>Trimite un mesaj</h2>
-        <form onsubmit="trimiteMesaj(event)">
-            <input type="text" name="mesaj" id="mesaj" placeholder="Scrie mesajul aici" required>
-            <button type="submit">Trimite</button>
-        </form>
-
-        <p><strong>Mesaj ultim trimis:</strong> {{ mesaj }}</p>
-    </div>
-
-    <script>
-        function toggleLED() {
-            fetch('/update_led', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    const btn = document.getElementById("led-btn");
-                    btn.textContent = "LED: " + (data.led ? "ON" : "OFF");
-                });
-        }
-
-        function trimiteMesaj(e) {
-            e.preventDefault();
-            const formData = new FormData();
-            formData.append("mesaj", document.getElementById("mesaj").value);
-            fetch('/trimite_mesaj', {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert("Mesaj transmis: " + data.mesaj);
-                location.reload();
-            });
-        }
-    </script>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask App</title>
+    <title>Monitorizare Sistem</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 <div class="container">
-    <h2>Controlul LED-ului și Mesajele</h2>
+    <h1 class="title">📡 Monitorizare Sistem</h1>
 
-    <!-- Afișare Temperatura -->
-    <div>
-        <h3>Temperatura: {{ temperatura }}°C</h3>
+    <!-- Temperatură -->
+    <div class="card">
+        <h2>🌡️ Temperatură curentă</h2>
+        <p class="value" id="temperatura">{{ temperatura }} °C</p>
     </div>
 
-    <!-- Control pentru LED -->
-    <div>
-        <h2>Control LED</h2>
-        <button onclick="schimbaLED(true)">Aprinde bec</button>
-        <button onclick="schimbaLED(false)">Stinge bec</button>
-        <p id="ledStatus">LED este {{ 'APRINS' if led else 'STINS' }}</p>
-
-        <h3>Temperatură curentă: <span id="temperatura">{{ temperatura }} °C</span></h3>
+    <!-- Control LED -->
+    <div class="card">
+        <h2>💡 Control LED</h2>
+        <div class="btn-group">
+            <button onclick="schimbaLED(true)">Aprinde LED</button>
+            <button onclick="schimbaLED(false)">Stinge LED</button>
+        </div>
+        <p class="status" id="ledStatus">LED este {{ 'APRINS' if led else 'STINS' }}</p>
     </div>
 
-    <!-- Form pentru trimiterea unui mesaj -->
-    <div>
-        <h3>Trimite un mesaj</h3>
+    <!-- Trimitere mesaj -->
+    <div class="card">
+        <h2>✉️ Trimite un mesaj</h2>
         <form id="form_mesaj" action="/trimite_mesaj" method="POST">
-            <textarea id="mesaj" name="mesaj" rows="4" cols="50" placeholder="Scrie mesajul aici..."></textarea><br><br>
-            <input type="email" id="email_destinatar" name="email_destinatar" placeholder="Adresa de email destinatar" required><br><br>
-            <input type="submit" value="Trimite mesaj">
+            <textarea id="mesaj" name="mesaj" placeholder="Scrie mesajul aici..." required></textarea>
+            <input type="email" id="email_destinatar" name="email_destinatar" placeholder="Email destinatar" required>
+            <button type="submit">Trimite mesaj</button>
         </form>
-        <div id="mesaj_curent"></div>
+        <div class="mesaj-info" id="mesaj_curent"></div>
     </div>
 
-    <!-- Buton pentru a curăța mesajele -->
-    <div>
-        <button id="curata_mesaje" onclick="curataMesaje()">Curăță mesajele</button>
+    <!-- Curăță mesajele -->
+    <div class="card">
+        <button class="secondary-btn" id="curata_mesaje" onclick="curataMesaje()">🗑️ Curăță mesajele</button>
     </div>
 </div>
 
 <script>
-// Script pentru interacțiunea cu backend-ul Flask
-
-// Toggle LED aprinde/stinge
-function toggleLed() {
-    fetch('/update_led', { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-            document.querySelector("h3").innerHTML = "LED este " + (data.led ? "aprins" : "stins");
-        });
-}
-
+// LED control
 function schimbaLED(stareNoua) {
     fetch('/update_led', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stare: stareNoua })
     })
     .then(response => response.json())
     .then(data => {
         const statusText = data.led ? "LED este APRINS" : "LED este STINS";
         document.getElementById("ledStatus").innerText = statusText;
-    })
-    .catch(error => console.error("Eroare:", error));
+    });
 }
 
 // Trimite mesaj
 document.getElementById('form_mesaj').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    var mesaj = document.getElementById('mesaj').value;
-    var destinatar = document.getElementById('email_destinatar').value;
-
+    const formData = new FormData(this);
     fetch('/trimite_mesaj', {
         method: 'POST',
-        body: new FormData(this)
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
@@ -143,9 +78,9 @@ document.getElementById('form_mesaj').addEventListener('submit', function(e) {
 function curataMesaje() {
     fetch('/curata_mesaje', { method: 'POST' })
         .then(response => response.json())
-        .then(data => {
+        .then(() => {
             document.getElementById('mesaj_curent').innerText = '';
-            document.getElementById('mesaj').value = ''; // Curăță câmpul de mesaj
+            document.getElementById('mesaj').value = '';
         });
 }
 </script>

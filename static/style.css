@@ -39,16 +39,16 @@ input[type="text"] {
 } */
 
 /* Stiluri generale */
-body {
+/* body {
     font-family: Arial, sans-serif;
     background: #f5f5f5;
     padding: 40px;
     text-align: center;
-    color: #000; /* text negru */
+    color: #000;
 }
 
 .container {
-    background: #d4edda; /* verde deschis */
+    background: #d4edda;
     padding: 20px;
     max-width: 500px;
     margin: auto;
@@ -58,9 +58,9 @@ body {
 
 button {
     padding: 10px 20px;
-    background: #28a745; /* verde mediu */
+    background: #28a745; 
     border: none;
-    color: #000; /* text negru */
+    color: #000; 
     font-size: 16px;
     margin-top: 10px;
     cursor: pointer;
@@ -68,7 +68,7 @@ button {
 }
 
 button:hover {
-    background: #218838; /* verde mai închis */
+    background: #218838;
 }
 
 input[type="text"],
@@ -78,4 +78,52 @@ textarea {
     padding: 10px;
     margin-top: 10px;
     font-size: 16px
+} */
+
+/* Stiluri generale în nuanțe de albastru */
+body {
+    font-family: Arial, sans-serif;
+    background: #e6f0fa; /* albastru foarte deschis */
+    padding: 40px;
+    text-align: center;
+    color: #003366; /* albastru închis */
+}
+
+.container {
+    background: #ffffff;
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 51, 102, 0.1);
+    border: 1px solid #cce0ff;
+}
+
+button {
+    padding: 12px 24px;
+    background: #3399ff; /* albastru mediu */
+    border: none;
+    color: white;
+    font-size: 16px;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 50px; /* buton rotund */
+    /*transition: background 0.3s ease;*/
+}
+
+button:hover {
+    background: #267acc; /* albastru mai închis */
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 80%;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #99ccff;
+    background-color: #f0f8ff;
+    color: #003366;
 }

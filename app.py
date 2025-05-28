@@ -23,7 +23,7 @@ def send_email(subiect,mesaj):
     SMTP_PORT = 587
     SMTP_USERNAME = 'lupualexandra308@gmail.com'
     SMTP_PASSWORD = 'vebrcdsetwgdptrh'
-    RECIPIENT_EMAIL = 'lupualexandra308@gmail.com'
+    RECIPIENT_EMAIL = 'aliciabogdan06@gmail.com'
 
     message = MIMEMultipart()
     message['From'] = SMTP_USERNAME
